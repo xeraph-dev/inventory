@@ -52,10 +52,16 @@ Tk must be configured against the Tcl you just installed:
 
 ```sh
 cd tk9.1-src/unix
+```
+
+```sh
 ./configure --disable-shared --enable-zipfs --enable-aqua \
     --prefix=$HOME/opt/tcl/9.1/osx/arm64 \
     --with-tcl=$HOME/opt/tcl/9.1/osx/arm64/lib \
     CFLAGS="-mmacosx-version-min=11.0" LDFLAGS="-mmacosx-version-min=11.0"
+```
+
+```sh
 make -j$(sysctl -n hw.ncpu) install
 ```
 

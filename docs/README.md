@@ -11,7 +11,7 @@ working on the project or contribute to it.
 | Section | What it answers |
 |---|---|
 | [getting-started/](getting-started/) | How do I set up my machine, run the app and build it? |
-| `architecture/` | How is this project put together? |
+| [architecture/](architecture/) | How is this project put together? |
 | `tcl-notes/` | How does this Tcl/Tk feature work? (general notes, one per topic) |
 | `conventions/` | What rules does the code follow? |
 
@@ -21,6 +21,7 @@ working on the project or contribute to it.
 2. [Tcl and Tk from source](getting-started/tcl-from-source.md): compile the static Tcl/Tk the build needs.
 3. [Running](getting-started/running.md): launch the app in development.
 4. [Building](getting-started/building.md): produce single-file executables.
+5. [Architecture overview](architecture/overview.md): how the project is put together.
 
 ## Writing conventions for these docs
 
