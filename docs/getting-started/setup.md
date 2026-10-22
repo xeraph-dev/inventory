@@ -7,7 +7,7 @@ What you need installed, and how the project expects its dependencies to be laid
 | Component | Version | Why |
 |---|---|---|
 | Tcl/Tk | 9.1 | The app uses Tcl 9 features (`const`, `file home`, `file tempdir`, `zipfs`) |
-| sqlite3 (Tcl package) | 3.53.4 | Database access |
+| sqlite3 (Tcl package) | 3.53.4 | Database access; bundled in the Tcl source tarball |
 | tcllib | 2.0 | Provides `snit` (the object system used for widgets) |
 | tklib | 0.9 | Extra Tk widgets; currently none are used |
 
@@ -36,9 +36,16 @@ What you need installed, and how the project expects its dependencies to be laid
 └── tklib/0.9/lib/tklib0.9/
 ```
 
-For day-to-day development you only need the build that matches your own
-machine. The other platform folders are only needed to build distributables
-(see [Building](building.md)).
+To build Tcl and Tk yourself, see [Tcl and Tk from source](tcl-from-source.md).
+
+This layout is only needed to build distributables (see [Building](building.md)).
+
+## Development
+
+To run the app while developing you do not need `~/opt`: any Tcl/Tk **9.1**
+installation works, as long as it provides `sqlite3` and `snit` (tcllib).
+On macOS, `brew install tcl-tk` installs one. Check the version with
+`info patchlevel` (see [Running](running.md)).
 
 ## Project layout
 
@@ -46,8 +53,8 @@ machine. The other platform folders are only needed to build distributables
 .
 ├── main.tcl         # Entry point
 ├── build.tcl        # Builds the distributable executables
-├── src/             # Application code (sourced recursively at startup)
-├── migrations/      # Database migrations (sourced recursively at startup)
+├── src/             # Application code
+├── migrations/      # Database migrations
 ├── msgs/            # Translation catalogs (*.msg)
 ├── res/             # Resources (app-icon.png)
 ├── lib/             # Third-party packages (see below)
@@ -56,7 +63,9 @@ machine. The other platform folders are only needed to build distributables
 
 ### The `lib/` directory
 
-`main.tcl` adds these directories to `auto_path`:
+Optional. Use it to vendor a third-party package that is not part of the
+installed Tcl. `main.tcl` appends these directories to `auto_path`, after the
+ones of the Tcl installation, so installed packages take precedence:
 
 ```
 lib/
@@ -64,17 +73,5 @@ lib/tcllib/
 lib/tklib/
 ```
 
-So packages must be reachable from there:
-
-```
-lib/
-├── sqlite3.53.4/    # the sqlite3 Tcl package
-├── tcllib/
-│   └── snit/
-└── tklib/
-```
-
-The build copies the same structure into the executable, so development
-and the packaged app resolve packages the same way.
-
-Next: [Running the app](running.md).
+The build bundles `sqlite3`, `snit` and any tklib packages into the same
+structure inside the executable (see [Building](building.md)).

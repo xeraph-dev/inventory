@@ -18,8 +18,9 @@ working on the project or contribute to it.
 ## Start here
 
 1. [Setup](getting-started/setup.md): install Tcl, tcllib, tklib and lay out the project.
-2. [Running](getting-started/running.md): launch the app in development.
-3. [Building](getting-started/building.md): produce single-file executables.
+2. [Tcl and Tk from source](getting-started/tcl-from-source.md): compile the static Tcl/Tk the build needs.
+3. [Running](getting-started/running.md): launch the app in development.
+4. [Building](getting-started/building.md): produce single-file executables.
 
 ## Writing conventions for these docs
 
