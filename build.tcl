@@ -8,8 +8,8 @@ const TKLIB_PKGS {}
 const APP_NAME inventory
 const APP_ITEMS {lib migrations msgs res src main.tcl}
 
-file delete -force build
-file mkdir build
+file delete -force dist
+file mkdir dist
 
 foreach {os arch exe} {
     osx arm64   wish9.1
@@ -39,10 +39,10 @@ foreach {os arch exe} {
 
     switch -exact -- $os {
         osx {
-            zipfs mkimg [file join build $APP_NAME-$os-$arch] $vfs $vfs "" [file join $tcl bin $exe]
+            zipfs mkimg [file join dist $APP_NAME-$os-$arch] $vfs $vfs "" [file join $tcl bin $exe]
         }
         win {
-            zipfs mkimg [file join build $APP_NAME-$arch.exe] $vfs $vfs "" [file join $tcl bin $exe]
+            zipfs mkimg [file join dist $APP_NAME-$arch.exe] $vfs $vfs "" [file join $tcl bin $exe]
         }
     }
 

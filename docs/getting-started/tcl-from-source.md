@@ -86,20 +86,36 @@ tarballs, so nothing from the arm64 build is reused.
 
 ```sh
 export MACOSX_DEPLOYMENT_TARGET=11.0
+```
 
 # Tcl
+```sh
 cd tcl9.1-src/unix
+```
+
+```sh
 arch -x86_64 ./configure --disable-shared --enable-zipfs --enable-64bit \
     --prefix=$HOME/opt/tcl/9.1/osx/x86_64 \
     CFLAGS="-mmacosx-version-min=11.0" LDFLAGS="-mmacosx-version-min=11.0"
+```
+
+```sh
 arch -x86_64 make -j$(sysctl -n hw.ncpu) install
+```
 
 # Tk
+```sh
 cd tk9.1-src/unix
+```
+
+```sh
 arch -x86_64 ./configure --disable-shared --enable-zipfs --enable-aqua --enable-64bit \
     --prefix=$HOME/opt/tcl/9.1/osx/x86_64 \
     --with-tcl=$HOME/opt/tcl/9.1/osx/x86_64/lib \
     CFLAGS="-mmacosx-version-min=11.0" LDFLAGS="-mmacosx-version-min=11.0"
+```
+
+```sh
 arch -x86_64 make -j$(sysctl -n hw.ncpu) install
 ```
 
@@ -123,12 +139,26 @@ Both are pure Tcl, so there is nothing architecture-specific about them: install
 each once. From each source directory:
 
 ```sh
-# tcllib
-./configure --prefix=$HOME/opt/tcllib/2.0
-make -j$(sysctl -n hw.ncpu) install
+cd tcllib-2.0-src/
+```
 
-# tklib
+```sh
+./configure --prefix=$HOME/opt/tcllib/2.0
+```
+
+```sh
+make -j$(sysctl -n hw.ncpu) install
+```
+
+```sh
+cd tklib-0.9-src/
+```
+
+```sh
 ./configure --prefix=$HOME/opt/tklib/0.9
+```
+
+```sh
 make -j$(sysctl -n hw.ncpu) install
 ```
 
