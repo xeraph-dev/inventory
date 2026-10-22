@@ -12,7 +12,7 @@ namespace eval migrations {
     proc create_table {} {
         db eval {
             CREATE TABLE IF NOT EXISTS schema_migrations (
-                version INTEGER PRIMARY KEY AUTOINCREMENT,
+                version INTEGER PRIMARY KEY,
                 applied_at INTEGER NOT NULL
             ) STRICT
         }
@@ -28,6 +28,7 @@ namespace eval migrations {
 
         create_table
         set current [current_version]
+        if {$current eq ""} {set current 0}
 
         foreach version [lsort -integer [dict keys $steps]] {
             if {$version <= $current} continue

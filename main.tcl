@@ -1,5 +1,6 @@
 const APP_DIR [file dirname [info script]]
 const APP_NAME inventory
+const DEFAULT_LOCALE es
 
 foreach dir {{} tcllib tklib} {lappend auto_path [file join $APP_DIR lib $dir]}
 
@@ -10,22 +11,26 @@ package require msgcat
 namespace import msgcat::*
 
 proc source-files {dir} {
-    foreach file [glob -directory $dir -types f *.tcl]  {source $file}
-    foreach dir  [glob -directory $dir -types d *]      {source-files $dir}
+    foreach file [lsort [glob -nocomplain -directory $dir -types f *.tcl]]  {source $file}
+    foreach sub  [lsort [glob -nocomplain -directory $dir -types d *]]      {source-files $sub}
 }
 
 foreach dir {src migrations} {source-files [file join $APP_DIR $dir]}
 
-const DATA_DIR [get-data-dir]
+const DATA_DIR [get_data_dir]
 file mkdir $DATA_DIR
 
 sqlite3 db [file join $DATA_DIR $APP_NAME.db]
 
 db eval {PRAGMA foreign_keys = ON}
 db eval {PRAGMA journal_mode = WAL}
-db eval {PRAGMA synchronous = NORMAL}
+db eval {PRAGMA synchronous = FULL}
 
-mcload [file join $APP_DIR msgs]
+if {![mcload [file join $APP_DIR msgs]]} {
+    mclocale $DEFAULT_LOCALE
+    mcload [file join $APP_DIR msgs]
+}
+
 migrations run_pending
 
 wm title . [mc window.title]
