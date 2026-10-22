@@ -12,7 +12,7 @@ working on the project or contribute to it.
 |---|---|
 | [getting-started/](getting-started/) | How do I set up my machine, run the app and build it? |
 | [architecture/](architecture/) | How is this project put together? |
-| `tcl-notes/` | How does this Tcl/Tk feature work? (general notes, one per topic) |
+| [tcl-notes/](tcl-notes/) | How does this Tcl/Tk feature work? (general notes, one per topic) |
 | `conventions/` | What rules does the code follow? |
 
 ## Start here
