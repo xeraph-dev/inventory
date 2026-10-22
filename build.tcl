@@ -6,7 +6,7 @@ const TCLLIB_PKGS {snit}
 const TKLIB_PKGS {}
 
 const APP_NAME inventory
-const APP_ITEMS {migrations msgs res src main.tcl}
+const APP_ITEMS {lib migrations msgs res src main.tcl}
 
 file delete -force build
 file mkdir build
@@ -28,11 +28,11 @@ foreach {os arch exe} {
     file copy [file join $mnt tk_library] [file join $vfs tk_library]
     zipfs unmount $mnt
 
-    file mkdir [file join $vfs lib]
+    foreach item $APP_ITEMS  {file copy $item [file join $vfs $item]}
+
     file mkdir [file join $vfs lib tcllib]
     file mkdir [file join $vfs lib tklib]
 
-    foreach item $APP_ITEMS  {file copy $item [file join $vfs $item]}
     foreach pkg $PKGS        {file copy [file join $tcl lib $pkg] [file join $vfs lib $pkg]}
     foreach pkg $TCLLIB_PKGS {file copy [file join $TCLLIB $pkg] [file join $vfs lib tcllib $pkg]}
     foreach pkg $TKLIB_PKGS  {file copy [file join $TKLIB $pkg] [file join $vfs lib tklib $pkg]}
