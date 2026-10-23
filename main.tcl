@@ -26,12 +26,12 @@ db eval {PRAGMA foreign_keys = ON}
 db eval {PRAGMA journal_mode = WAL}
 db eval {PRAGMA synchronous = FULL}
 
+migrations run_pending
+
 if {![mcload [file join $APP_DIR msgs]]} {
     mclocale $DEFAULT_LOCALE
     mcload [file join $APP_DIR msgs]
 }
-
-migrations run_pending
 
 wm title . [mc window.title]
 
