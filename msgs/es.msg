@@ -1,6 +1,7 @@
-mcset es window.title Inventario
-
+mcset es window_title Inventario
 mcset es products Productos
-mcset es products.code Código
-mcset es products.name Nombre
-mcset es products.notes Notas
+mcset es code Código
+mcset es name Nombre
+mcset es notes Notas
+mcset es save Guardar
+mcset es cancel cancelar
