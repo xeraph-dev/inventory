@@ -1,14 +1,14 @@
-# ttk::treeview and ttk::scrollbar
+# ttk::treeview
 
-A treeview shows rows of data, either as a flat table with column headings or as a hierarchy. This note covers the flat table with a vertical scrollbar, which is what lists of records need.
+A treeview shows rows of data, either as a flat table with column headings or as a hierarchy. This note covers the flat table, which is what lists of records need.
 
 ## What it is and when to use it
 
-`ttk::treeview` is Tk's table widget. Despite the name, it is the usual choice for a plain list of records: hide the tree column, define data columns, and insert one item per row. It does not scroll by itself: a `ttk::scrollbar` is connected to it.
+`ttk::treeview` is Tk's table widget. Despite the name, it is the usual choice for a plain list of records: hide the tree column, define data columns, and insert one item per row. It does not scroll by itself (see [Scrolling](#scrolling)).
 
 ## Minimal example
 
-A table of two columns with a vertical scrollbar:
+A table of two columns:
 
 ```tcl
 package require Tk
@@ -17,31 +17,20 @@ proc on-select {tv} {
     puts "selected id: [$tv selection]"
 }
 
-ttk::frame .f
-pack .f -fill both -expand yes
+ttk::treeview .tv -columns {code name} -show headings -selectmode browse
+pack .tv -fill both -expand yes
 
-ttk::treeview .f.tv -columns {code name} -show headings -selectmode browse \
-    -yscrollcommand [list .f.sb set]
-ttk::scrollbar .f.sb -orient vertical -command [list .f.tv yview]
-
-.f.tv heading code -text Code
-.f.tv heading name -text Name
-.f.tv column code -width 80 -stretch no
-.f.tv column name -width 220
-
-grid .f.tv -row 0 -column 0 -sticky nsew
-grid .f.sb -row 0 -column 1 -sticky ns
-grid columnconfigure .f 0 -weight 1
-grid rowconfigure    .f 0 -weight 1
+.tv heading code -text Code
+.tv heading name -text Name
+.tv column code -width 80 -stretch no
+.tv column name -width 220
 
 foreach {id code name} {1 A-100 "Red pen" 2 A-200 "Blue pen" 3 B-300 "Paper A4"} {
-    .f.tv insert {} end -id $id -values [list $code $name]
+    .tv insert {} end -id $id -values [list $code $name]
 }
 
-bind .f.tv <<TreeviewSelect>> [list on-select .f.tv]
+bind .tv <<TreeviewSelect>> [list on-select .tv]
 ```
-
-The two widgets are wired in both directions: the treeview reports its position with `-yscrollcommand`, and the scrollbar moves the treeview with `-command`. Both lines are needed.
 
 ## Concepts
 
@@ -66,6 +55,28 @@ The two widgets are wired in both directions: the treeview reports its position 
 
 To clear the table: `$tv delete [$tv children {}]`. It also works when the table is already empty.
 
+## Scrolling
+
+A treeview shows only as many rows as fit; to scroll it, connect a `ttk::scrollbar` to it. Each one reports to the other, so both options are needed:
+
+```tcl
+package require Tk
+
+ttk::frame .f
+pack .f -fill both -expand yes
+
+ttk::treeview .f.tv -columns {code name} -show headings -selectmode browse \
+    -yscrollcommand [list .f.sb set]
+ttk::scrollbar .f.sb -orient vertical -command [list .f.tv yview]
+
+grid .f.tv -row 0 -column 0 -sticky nsew
+grid .f.sb -row 0 -column 1 -sticky ns
+grid columnconfigure .f 0 -weight 1
+grid rowconfigure    .f 0 -weight 1
+```
+
+Create the treeview and the scrollbar as siblings in the same container, and give the treeview's row and column a grid weight, or it keeps its initial size instead of filling the window. For horizontal scrollbars and hiding the bar when it is not needed, see [ttk::scrollbar](ttk-scrollbar.md).
+
 ## Sorting
 
 Treeview has no built-in sorting: you reorder the items yourself. `move` changes an item's position without recreating it, so selection and IDs are kept:
@@ -82,7 +93,7 @@ proc sort-by {tv col {descending 0}} {
     }
 }
 
-.f.tv heading name -command [list sort-by .f.tv name]
+.tv heading name -command [list sort-by .tv name]
 ```
 
 Cell values come back as strings, so choose the `lsort` mode that fits the column (`-dictionary`, `-integer`, `-real`).
@@ -97,9 +108,7 @@ Cell values come back as strings, so choose the `lsort` mode that fits the colum
 
 **The default `-selectmode` is `extended`** (multiple selection). Use `browse` for a single selected row.
 
-**The scrollbar does nothing without the grid weights.** Without `grid columnconfigure ... -weight 1` and `grid rowconfigure ... -weight 1`, the treeview keeps its initial size instead of filling the window. `-height` sets only the initial number of visible rows.
-
-**Create the scrollbar and the treeview as siblings, in the same container**, so one `grid` (or `pack`) arrangement controls both.
+**`-height` sets only the initial number of visible rows.** After that the treeview's size depends on the geometry manager: it fills the window only if the container is configured to give it the space (`pack -fill both -expand yes`, or grid weights).
 
 ## In this project
 
@@ -108,4 +117,3 @@ Not used yet.
 ## Official documentation
 
 - [ttk::treeview](https://www.tcl-lang.org/man/tcl/TkCmd/ttk_treeview.htm)
-- [ttk::scrollbar](https://www.tcl-lang.org/man/tcl/TkCmd/ttk_scrollbar.htm)

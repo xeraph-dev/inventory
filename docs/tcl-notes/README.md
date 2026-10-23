@@ -9,10 +9,18 @@ Nothing here depends on this project. How Inventory itself is built lives in
 
 | Folder | What goes in it |
 |---|---|
-| `tk/` | Widgets and Tk behavior (`ttk::notebook`, `ttk::treeview`, validation, ...) |
+| `tk/` | Widgets and Tk behavior (`ttk::notebook`, `ttk::treeview`, `ttk::scrollbar`, validation, ...) |
 | `tcl/` | The language and its libraries (`snit`, `namespace ensemble`, `uplevel`, `msgcat`, ...) |
 
 One note per topic, named after the topic (`tk/ttk-notebook.md`, `tcl/snit.md`).
+
+## Notes are independent
+
+Each note covers a single topic and can be read, and its examples run, without
+opening any other note. When two topics are used together (a treeview and a
+scrollbar, for example), each note carries its own short snippet for the
+combination and links to the other one for the details. A note never explains
+the other topic.
 
 ## Template
 
@@ -29,7 +37,8 @@ Every note follows this structure, and leaves out a section if it has nothing to
 ### tk/
 
 - [ttk::notebook](tk/ttk-notebook.md): tabbed container, the base of the app's main window.
-- [ttk::treeview and ttk::scrollbar](tk/ttk-treeview.md): tables of records with a scrollbar.
+- [ttk::scrollbar](tk/ttk-scrollbar.md): how to connect a scrollbar to any scrollable widget.
+- [ttk::treeview](tk/ttk-treeview.md): tables of records.
 
 ### tcl/
 

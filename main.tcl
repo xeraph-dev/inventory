@@ -33,7 +33,7 @@ if {![mcload [file join $APP_DIR msgs]]} {
     mcload [file join $APP_DIR msgs]
 }
 
-wm title . [mc window.title]
+wm title . [mc window_title]
 
 image create photo app-icon -file [file join $APP_DIR res app-icon.png]
 wm iconphoto . app-icon
