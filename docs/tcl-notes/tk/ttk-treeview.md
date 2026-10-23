@@ -110,10 +110,6 @@ Cell values come back as strings, so choose the `lsort` mode that fits the colum
 
 **`-height` sets only the initial number of visible rows.** After that the treeview's size depends on the geometry manager: it fills the window only if the container is configured to give it the space (`pack -fill both -expand yes`, or grid weights).
 
-## In this project
-
-Not used yet.
-
 ## Official documentation
 
 - [ttk::treeview](https://www.tcl-lang.org/man/tcl/TkCmd/ttk_treeview.htm)

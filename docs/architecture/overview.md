@@ -40,7 +40,7 @@ Consequences:
 The order in `main.tcl` is deliberate:
 
 1. Code is sourced, then the database is opened.
-2. Message catalogs are loaded, then migrations run, **then** the UI is created.
+2. Migrations run, then message catalogs are loaded, **then** the UI is created.
 
 So the UI can always assume that the schema is up to date and that `mc`
 already has its catalog.

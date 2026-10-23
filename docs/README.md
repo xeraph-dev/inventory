@@ -13,7 +13,7 @@ working on the project or contribute to it.
 | [getting-started/](getting-started/) | How do I set up my machine, run the app and build it? |
 | [architecture/](architecture/) | How is this project put together? |
 | [tcl-notes/](tcl-notes/) | How does this Tcl/Tk feature work? (general notes, one per topic) |
-| `conventions/` | What rules does the code follow? |
+| `conventions/` | What rules does the code follow? *(not written yet)* |
 
 ## Start here
 
@@ -27,5 +27,6 @@ working on the project or contribute to it.
 
 - Written in English, in Markdown.
 - Every document starts with one or two lines saying what it covers.
-- Prefer real code from the project over invented examples.
+- Prefer real code over invented examples, but show patterns, not copies of specific files.
+- Do not refer to specific files of the project in the architecture guides and in the Tcl/Tk notes.
 - Link to other documents instead of repeating their content.

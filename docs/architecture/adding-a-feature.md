@@ -2,16 +2,16 @@
 
 The steps to add a new section to the app, from the database to the screen.
 
-The products section is the reference implementation: copy its pattern.
+Use an existing section as a reference: copy its pattern.
 
 ## Checklist
 
-| # | Step | Reference | Details |
-|---|---|---|---|
-| 1 | Create the table | `migrations/001-products.tcl` | [Migrations](migrations.md) |
-| 2 | Create the panel | `src/products/products-panel.tcl` | [UI](ui.md) |
-| 3 | Add the tab | `src/app.tcl` | [UI](ui.md#adding-a-tab) |
-| 4 | Add the strings | `msgs/es.msg` | [Internationalization](i18n.md) |
+| # | Step | Details |
+|---|---|---|
+| 1 | Create the table | [Migrations](migrations.md) |
+| 2 | Create the panel | [UI](ui.md) |
+| 3 | Add the tab | [UI](ui.md#adding-a-tab) |
+| 4 | Add the strings | [Internationalization](i18n.md) |
 
 Files are sourced automatically, so nothing needs to be registered besides the tab.
 

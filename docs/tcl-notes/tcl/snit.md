@@ -85,10 +85,6 @@ What each part does:
 - `%AUTO%` works for `snit::type` but not for widgets.
 - A hyphenated type name such as `products-panel` is fine; its Tk class name is derived from it (`Products-panel`).
 
-## In this project
-
-Every screen is a `snit::widget` with a `ttk::frame` hull: `app` in `src/app.tcl` and `products-panel` in `src/products/products-panel.tcl`. See [UI](../../architecture/ui.md) for the boilerplate they share and how to add a tab.
-
 ## Official documentation
 
 - [snit reference](https://core.tcl-lang.org/tcllib/doc/trunk/embedded/md/tcllib/files/modules/snit/snit.md)

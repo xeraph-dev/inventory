@@ -75,10 +75,6 @@ listbox .f.lb -yscrollcommand [list hide-when-unneeded .f.sb]
 
 `grid remove` remembers the grid options, so a plain `grid $sb` puts it back where it was. Keep in mind that the layout changes by the scrollbar's width each time it appears or disappears. tklib also has an `autoscroll` package that does this.
 
-## In this project
-
-Not used yet.
-
 ## Official documentation
 
 - [ttk::scrollbar](https://www.tcl-lang.org/man/tcl/TkCmd/ttk_scrollbar.htm)

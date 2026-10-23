@@ -52,10 +52,6 @@ Tab options: `-text`, `-image`, `-compound`, `-state` (`normal`, `disabled`, `hi
 
 **Keyboard traversal is opt-in.** Call `ttk::notebook::enableTraversal $nb` to get Control-Tab and mnemonics from `-underline`. The Tk manual states that it only works properly if every pane is a direct child of the notebook, so create panes as `$nb.name`.
 
-## In this project
-
-`app` holds a notebook in `src/app.tcl`, and each tab is a panel widget created as a child of it. See [UI](../../architecture/ui.md#adding-a-tab) for how to add a tab, and the note on the window's minimum size.
-
 ## Official documentation
 
 - [ttk::notebook](https://www.tcl-lang.org/man/tcl/TkCmd/ttk_notebook.htm)
