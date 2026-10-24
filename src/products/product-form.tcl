@@ -1,0 +1,29 @@
+snit::widget product-form {
+    hulltype ttk::frame
+
+    component code_entry
+    component name_entry
+    component notes_entry
+    component save_button
+
+    delegate method * to hull
+    delegate option * to hull
+
+    variable code {}
+    variable name {}
+    variable notes {}
+
+    constructor args {
+        install code_entry using labelentry $win.code -label [mc code] -textvariable [myvar code]
+        install name_entry using labelentry $win.name -label [mc name] -textvariable [myvar name]
+        install notes_entry using labelentry $win.notes -label [mc notes] -textvariable [myvar notes]
+        install save_button using ttk::button $win.save -text [mc save] -command [mymethod save]
+
+        pack $code_entry $name_entry $notes_entry -pady {0 8} -fill x
+        pack $save_button -fill x
+
+        $self configurelist $args
+    }
+
+    method save {} {}
+}

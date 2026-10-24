@@ -9,8 +9,10 @@ snit::widget products-panel {
 
     constructor args {
         install table using products-table $win.table
+        install form using product-form $win.form -padding 4
 
         pack $table -side left -fill both -expand yes
+        pack $form -side left -fill y
 
         $self configurelist $args
     }

@@ -4,7 +4,7 @@ A single-line text field. The user types in it; your code reads, sets and valida
 
 ## What it is and when to use it
 
-Use it for short free text: a name, a code, a number, a search box. For several lines use `text`; to pick from a fixed set use `ttk::combobox`.
+Use it for short free text: a name, a code, a number, a search box. For several lines use `text`; to pick from a fixed set use [ttk::combobox](./ttk-combobox.md).
 
 ## Minimal example
 
