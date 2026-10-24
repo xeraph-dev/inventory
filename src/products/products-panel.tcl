@@ -4,6 +4,8 @@ snit::widget products-panel {
     component table
     component form
 
+    propagate -revisions to {table form}
+
     delegate method * to hull
     delegate option * to hull
 

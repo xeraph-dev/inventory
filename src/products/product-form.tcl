@@ -6,6 +6,8 @@ snit::widget product-form {
     component notes_entry
     component save_button
 
+    option -revisions
+
     delegate method * to hull
     delegate option * to hull
 
@@ -25,5 +27,23 @@ snit::widget product-form {
         $self configurelist $args
     }
 
-    method save {} {}
+    method save {} {
+        upvar $options(-revisions) revisions
+
+        db eval {
+            INSERT INTO products (code, name, notes)
+            VALUES (:code, :name, :notes)
+        }
+
+
+        incr revisions(products)
+
+        $self clear
+    }
+
+    method clear {} {
+        set code {}
+        set name {}
+        set notes {}
+    }
 }
