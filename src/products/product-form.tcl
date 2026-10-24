@@ -14,10 +14,10 @@ snit::widget product-form {
     variable notes {}
 
     constructor args {
-        install code_entry using labelentry $win.code -label [mc code] -textvariable [myvar code]
-        install name_entry using labelentry $win.name -label [mc name] -textvariable [myvar name]
-        install notes_entry using labelentry $win.notes -label [mc notes] -textvariable [myvar notes]
-        install save_button using ttk::button $win.save -text [mc save] -command [mymethod save]
+        install code_entry using labelentry $win.code -label [mc products.code] -textvariable [myvar code]
+        install name_entry using labelentry $win.name -label [mc products.name] -textvariable [myvar name]
+        install notes_entry using labelentry $win.notes -label [mc products.notes] -textvariable [myvar notes]
+        install save_button using ttk::button $win.save -text [mc common.save] -command [mymethod save]
 
         pack $code_entry $name_entry $notes_entry -pady {0 8} -fill x
         pack $save_button -fill x
