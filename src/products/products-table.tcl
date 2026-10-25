@@ -50,5 +50,6 @@ snit::widget products-table {
 
     method unselect {} {
         $tree selection set {}
+        $tree focus {}
     }
 }
