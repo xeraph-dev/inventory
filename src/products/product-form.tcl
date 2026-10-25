@@ -19,6 +19,8 @@ snit::widget product-form {
     variable name {}
     variable notes {}
 
+    variable loaded {{} {} {}}
+
     constructor args {
         install code_entry using labelentry $win.code -label [mc products.code] -textvariable [myvar code]
         install name_entry using labelentry $win.name -label [mc products.name] -textvariable [myvar name]
@@ -37,23 +39,38 @@ snit::widget product-form {
         $self configurelist $args
     }
 
+    method dirty {} {
+        expr {[list $code $name $notes] ne $loaded}
+    }
+
     method save {} {
         upvar $options(-revisions) revisions
 
-        if {$id == -1} {
-            db eval {
-                INSERT INTO products (code, name, notes)
-                VALUES (:code, :name, :notes)
+        try {
+            if {$id == -1} {
+                db eval {
+                    INSERT INTO products (code, name, notes)
+                    VALUES (:code, :name, :notes)
+                }
+            } else {
+                db eval {
+                    UPDATE products
+                    SET code = :code,
+                        name = :name,
+                        notes = :notes
+                    WHERE id = :id
+                } {}
             }
-        } else {
-            db eval {
-                UPDATE products
-                SET code = :code,
-                    name = :name,
-                    notes = :notes
-                WHERE id = :id
-                RETURNING id
-            } {}
+        } on error {msg opts} {
+            if {[regexp {^UNIQUE constraint failed: products\.(\w+)} $msg -> column]} {
+                set key products.form.duplicate.$column
+            } elseif {[regexp {^CHECK constraint failed: products_(\w+)_not_empty} $msg -> column]} {
+                set key products.form.empty.$column
+            } else {
+                return -option $opts $msg
+            }
+            tk_messageBox -type ok -icon error -title [mc common.error] -message [mc $key]
+            return
         }
 
         incr revisions(products)
@@ -70,7 +87,10 @@ snit::widget product-form {
     method delete {} {
         upvar $options(-revisions) revisions
 
-        if {[tk_messageBox -type yesno -title [mc products.form.delete.title] -message [mc products.form.delete.message]] == no} {return}
+        set answer [tk_messageBox -type yesno -icon warning -default no \
+            -title [mc products.form.delete.title] \
+            -message [mc products.form.delete.message $name]]
+        if {$answer eq no} {return}
 
         db eval {
             DELETE FROM products
@@ -88,14 +108,31 @@ snit::widget product-form {
         set code {}
         set name {}
         set notes {}
+        set loaded [list $code $name $notes]
         $delete_button configure -state disabled
     }
 
     method edit {edit_id} {
-        if {$edit_id == {} && $id == -1} {return}
-        if {$edit_id == {} && $id != -1} {$self clear; return}
+        if {$edit_id eq ""} {
+            if {$id != -1} {$self clear}
+            return
+        }
+
+        if {$edit_id == $id} {return}
+
+        if {[$self dirty]} {
+            set answer [tk_messageBox -type yesno -icon warning -default no \
+                -title [mc products.form.discard.title] \
+                -message [mc products.form.discard.message]]
+            if {$answer eq no} {
+                event generate $win <<ProductEditRejected>> -data [expr {$id == -1 ? "" : $id}]
+                return
+            }
+        }
+
         db eval {SELECT code, name, notes FROM products WHERE id = :edit_id} {}
         set id $edit_id
+        set loaded [list $code $name $notes]
         $delete_button configure -state normal
     }
 }

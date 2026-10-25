@@ -4,7 +4,10 @@ migrations register 1 {
             id      INTEGER PRIMARY KEY,
             code    TEXT    UNIQUE  NOT NULL,
             name    TEXT    UNIQUE  NOT NULL,
-            notes   TEXT            NOT NULL DEFAULT ''
+            notes   TEXT            NOT NULL DEFAULT '',
+
+            CONSTRAINT products_code_not_empty CHECK (trim(code) <> ''),
+            CONSTRAINT products_name_not_empty CHECK (trim(name) <> '')
         ) STRICT
     }
 }

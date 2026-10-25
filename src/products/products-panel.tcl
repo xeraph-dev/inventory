@@ -20,5 +20,6 @@ snit::widget products-panel {
 
         bind $table <<ProductSelected>> [list $form edit %d]
         bind $form <<ProductFormCancel>> [list $table unselect]
+        bind $form <<ProductEditRejected>> [list $table select %d]
     }
 }

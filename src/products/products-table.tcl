@@ -25,7 +25,7 @@ snit::widget products-table {
 
         $self refresh
 
-        bind $tree <<TreeviewSelect>> [mymethod select]
+        bind $tree <<TreeviewSelect>> [mymethod product_selected]
     }
 
     destructor {
@@ -44,12 +44,21 @@ snit::widget products-table {
         }
     }
 
-    method select {} {
+    method product_selected {} {
         event generate $win <<ProductSelected>> -data [$tree selection]
     }
 
     method unselect {} {
         $tree selection set {}
         $tree focus {}
+    }
+
+    method select {{item {}}} {
+        if {$item eq ""} {
+            $self unselect
+            return
+        }
+        $tree selection set $item
+        $tree focus $item
     }
 }
