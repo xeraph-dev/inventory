@@ -22,7 +22,7 @@ pack .tv -fill both -expand yes
 
 .tv heading code -text Code
 .tv heading name -text Name
-.tv column code -width 80 -stretch no
+.tv column code -minwidth 80 -width 80
 .tv column name -width 220
 
 foreach {id code name} {1 A-100 "Red pen" 2 A-200 "Blue pen" 3 B-300 "Paper A4"} {
@@ -37,6 +37,7 @@ bind .tv <<TreeviewSelect>> [list on-select .tv]
 - **Columns.** `-columns` names the data columns. There is also a built-in column called `#0` that holds the tree (the expand arrows and the item's `-text`). With `-show headings` that column is hidden, which gives a plain table.
 - **Items.** Every row is an item with an ID. `insert parent index` creates one: use `{}` as the parent for a flat list and `end` as the index. Pass `-id` to choose the ID yourself, or Tk generates one.
 - **Values.** `-values` is a list with one element per data column, in column order.
+- **Selection and focus.** The selected items and the focused item (the one with the focus ring) are two separate things.
 
 ## Commands you will use
 
@@ -46,12 +47,10 @@ bind .tv <<TreeviewSelect>> [list on-select .tv]
 | `$tv delete $items` | Removes the given items |
 | `$tv children {}` | Lists the top-level item IDs, in display order |
 | `$tv selection` | Returns the selected item IDs |
-| `$tv selection set $id` | Selects an item |
-| `$tv item $id -values` | Reads or sets all the values of a row |
-| `$tv set $id $column` | Reads or sets one cell |
-| `$tv heading $col -text T -command C` | Sets the heading text and its click handler |
-| `$tv column $col -width N -stretch no` | Sets the width; `-stretch no` keeps it fixed when the window resizes |
-| `$tv identify row $x $y` | Returns the item under a point, useful for double-click |
+| `$tv selection set $id` | Selects an item; `selection set {}` clears the selection |
+| `$tv focus ?$id?` | Returns or sets the focused item; `focus {}` clears it |
+| `$tv heading $col -text $text` | Sets the heading text |
+| `$tv column $col -minwidth N -width N` | Sets the minimum and the initial width of a column |
 
 To clear the table: `$tv delete [$tv children {}]`. It also works when the table is already empty.
 
@@ -69,34 +68,11 @@ ttk::treeview .f.tv -columns {code name} -show headings -selectmode browse \
     -yscrollcommand [list .f.sb set]
 ttk::scrollbar .f.sb -orient vertical -command [list .f.tv yview]
 
-grid .f.tv -row 0 -column 0 -sticky nsew
-grid .f.sb -row 0 -column 1 -sticky ns
-grid columnconfigure .f 0 -weight 1
-grid rowconfigure    .f 0 -weight 1
+pack .f.tv -side left -fill both -expand yes
+pack .f.sb -side right -fill y
 ```
 
-Create the treeview and the scrollbar as siblings in the same container, and give the treeview's row and column a grid weight, or it keeps its initial size instead of filling the window. For horizontal scrollbars and hiding the bar when it is not needed, see [ttk::scrollbar](ttk-scrollbar.md).
-
-## Sorting
-
-Treeview has no built-in sorting: you reorder the items yourself. `move` changes an item's position without recreating it, so selection and IDs are kept:
-
-```tcl
-proc sort-by {tv col {descending 0}} {
-    set rows {}
-    foreach item [$tv children {}] {lappend rows [list [$tv set $item $col] $item]}
-    set dir [expr {$descending ? "-decreasing" : "-increasing"}]
-    set i 0
-    foreach row [lsort -dictionary $dir -index 0 $rows] {
-        $tv move [lindex $row 1] {} $i
-        incr i
-    }
-}
-
-.tv heading name -command [list sort-by .tv name]
-```
-
-Cell values come back as strings, so choose the `lsort` mode that fits the column (`-dictionary`, `-integer`, `-real`).
+Create the treeview and the scrollbar as siblings in the same container. For how the two callbacks work and their pitfalls, see [ttk::scrollbar](ttk-scrollbar.md).
 
 ## Pitfalls
 
@@ -104,11 +80,15 @@ Cell values come back as strings, so choose the `lsort` mode that fits the colum
 
 **Use the database key as the item `-id`.** Then `[$tv selection]` gives you the key directly and you never need a lookup table. IDs must be unique within the treeview.
 
-**`<<TreeviewSelect>>` fires on programmatic changes too**, not only on clicks, and it fires when the selected item is deleted. In that case `$tv selection` is empty inside the handler, so always handle the empty case.
+**`<<TreeviewSelect>>` (a [virtual event](events.md)) fires on programmatic changes too**, not only on clicks, and it fires when the selected item is deleted. In that case `$tv selection` is empty inside the handler, so always handle the empty case. If your handler can end up selecting a row itself, make it harmless to run twice for the same row.
+
+**Clearing the selection does not clear the focus.** After `selection set {}` the last item keeps the focus ring; also call `focus {}` to remove it.
 
 **The default `-selectmode` is `extended`** (multiple selection). Use `browse` for a single selected row.
 
-**`-height` sets only the initial number of visible rows.** After that the treeview's size depends on the geometry manager: it fills the window only if the container is configured to give it the space (`pack -fill both -expand yes`, or grid weights).
+**Refreshing the table clears the selection.** Deleting every item and inserting them again deselects the row, and fires `<<TreeviewSelect>>` once for the deletion.
+
+**`-width` is only the starting width.** `-minwidth` is the smallest width the user can drag a column to.
 
 ## Official documentation
 

@@ -27,6 +27,7 @@ working on the project or contribute to it.
 
 - Written in English, in Markdown.
 - Every document starts with one or two lines saying what it covers.
-- Prefer real code over invented examples, but show patterns, not copies of specific files.
-- Do not refer to specific files of the project in the architecture guides and in the Tcl/Tk notes.
+- **Never refer to existing code** (files, procs, widgets, variables or constants of the project): the code changes and the docs would silently go stale. When an example is needed, write a new, self-contained code block that shows the pattern. The only exception is [getting-started/](getting-started/), which names the files you run (entry point, build script) and the top-level directories.
+- **[tcl-notes/](tcl-notes/) only documents what the project uses.** Commands, widgets and options the project does not use are left out, so nothing there is mistaken for part of the project.
+- **Documents that depend on each other link to each other**, in both directions, with real relative links (and anchors when pointing to a section).
 - Link to other documents instead of repeating their content.

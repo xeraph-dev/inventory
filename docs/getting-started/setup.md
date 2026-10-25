@@ -56,16 +56,19 @@ On macOS, `brew install tcl-tk` installs one. Check the version with
 ├── src/             # Application code
 ├── migrations/      # Database migrations
 ├── msgs/            # Translation catalogs (*.msg)
-├── res/             # Resources (app-icon.png)
+├── res/             # Static resources (the app icon)
 ├── lib/             # Third-party packages (see below)
 └── dist/            # Build output (git-ignored)
 ```
 
+How these directories work together is explained in the
+[Architecture overview](../architecture/overview.md).
+
 ### The `lib/` directory
 
 Optional. Use it to vendor a third-party package that is not part of the
-installed Tcl. `main.tcl` appends these directories to `auto_path`, after the
-ones of the Tcl installation, so installed packages take precedence:
+installed Tcl. The entry point appends these directories to `auto_path`, after
+the ones of the Tcl installation, so installed packages take precedence:
 
 ```
 lib/

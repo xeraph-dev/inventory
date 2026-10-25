@@ -7,13 +7,14 @@ How the database schema evolves, and how to add a migration.
 Create `migrations/NNN-name.tcl`, where `NNN` is the next number, and register a script with the same number:
 
 ```tcl
-migrations register 1 {
+migrations register 7 {
     db eval {
-        CREATE TABLE IF NOT EXISTS products (
+        CREATE TABLE IF NOT EXISTS suppliers (
             id      INTEGER PRIMARY KEY,
-            code    TEXT    UNIQUE  NOT NULL,
             name    TEXT    UNIQUE  NOT NULL,
-            notes   TEXT            NOT NULL DEFAULT ''
+            notes   TEXT            NOT NULL DEFAULT '',
+
+            CONSTRAINT suppliers_name_not_empty CHECK (trim(name) <> '')
         ) STRICT
     }
 }
@@ -34,6 +35,7 @@ pending migrations run on the next startup.
 - **Keep migrations small and independent** of application code: they must keep working years later, when the code has changed.
 - SQLite can run DDL in a transaction, but its `ALTER TABLE` is limited. Changing or dropping a column often means creating a new table, copying the data and renaming. Do it inside a single migration.
 - Tables use `STRICT` (see [Database](database.md)).
+- **Name the `CHECK` constraints** (`<table>_<column>_<rule>`): the error text then says which rule failed, and the UI can show the right message (see [Handling constraint errors](database.md#handling-constraint-errors)).
 
 ## Starting from scratch in development
 
