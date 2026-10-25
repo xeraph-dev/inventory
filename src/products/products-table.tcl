@@ -24,6 +24,8 @@ snit::widget products-table {
         $self configurelist $args
 
         $self refresh
+
+        bind $tree <<TreeviewSelect>> [mymethod select]
     }
 
     destructor {
@@ -40,5 +42,13 @@ snit::widget products-table {
         db eval {SELECT id, code, name, notes FROM products ORDER BY code} {
             $tree insert {} end -id $id -values [list $code $name $notes]
         }
+    }
+
+    method select {} {
+        event generate $win <<ProductSelected>> -data [$tree selection]
+    }
+
+    method unselect {} {
+        $tree selection set {}
     }
 }

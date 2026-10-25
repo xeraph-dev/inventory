@@ -17,5 +17,8 @@ snit::widget products-panel {
         pack $form -side left -fill y
 
         $self configurelist $args
+
+        bind $table <<ProductSelected>> [list $form edit %d]
+        bind $form <<ProductFormCancel>> [list $table unselect]
     }
 }

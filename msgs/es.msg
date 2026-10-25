@@ -6,3 +6,4 @@ mcset es products.name Nombre
 mcset es products.notes Notas
 
 mcset es common.save Guardar
+mcset es common.cancel Cancelar
