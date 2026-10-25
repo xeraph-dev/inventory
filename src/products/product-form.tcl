@@ -59,7 +59,7 @@ snit::widget product-form {
                         name = :name,
                         notes = :notes
                     WHERE id = :id
-                } {}
+                }
             }
         } on error {msg opts} {
             if {[regexp {^UNIQUE constraint failed: products\.(\w+)} $msg -> column]} {
@@ -67,7 +67,7 @@ snit::widget product-form {
             } elseif {[regexp {^CHECK constraint failed: products_(\w+)_not_empty} $msg -> column]} {
                 set key products.form.empty.$column
             } else {
-                return -option $opts $msg
+                return -options $opts $msg
             }
             tk_messageBox -type ok -icon error -title [mc common.error] -message [mc $key]
             return
@@ -75,7 +75,7 @@ snit::widget product-form {
 
         incr revisions(products)
 
-        event generate $win <<ProductFormSave>> -data $id
+        event generate $win <<ProductFormSave>> -data [db last_insert_rowid]
         $self clear
     }
 

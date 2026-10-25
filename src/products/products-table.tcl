@@ -29,7 +29,7 @@ snit::widget products-table {
     }
 
     destructor {
-        try {trace remove variable $options(-revisions)(products) write [mymethod refresh]}
+        catch {trace remove variable $options(-revisions)(products) write [mymethod refresh]}
     }
 
     method ConfigureRevisionsOption {option value} {

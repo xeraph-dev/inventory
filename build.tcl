@@ -28,7 +28,9 @@ foreach {os arch exe} {
     file copy [file join $mnt tk_library] [file join $vfs tk_library]
     zipfs unmount $mnt
 
-    foreach item $APP_ITEMS  {file copy $item [file join $vfs $item]}
+    foreach item $APP_ITEMS {
+        if {[file exists $item]} {file copy $item [file join $vfs $item]}
+    }
 
     file mkdir [file join $vfs lib tcllib]
     file mkdir [file join $vfs lib tklib]
